@@ -54,6 +54,14 @@ class ButtonView: View {
     /** The game that is displayed in this view. */
     private val game: GameInterface = ButtonGame()
 
+    private val gameChangeListener: GameInterface.GameChangeListener = GameInterface.GameChangeListener {
+        invalidate()
+    }
+
+    init {
+        game.addGameChangeListener(gameChangeListener)
+    }
+
     private val gestureDetector =
         GestureDetectorCompat(context, object : GestureDetector.SimpleOnGestureListener() {
             override fun onDown(e: MotionEvent): Boolean {
@@ -75,7 +83,7 @@ class ButtonView: View {
                     distMinus < radius -> game.buttonPressed('m')
                     else -> return false
                 }
-                invalidate()
+                //invalidate()
                 return true
             }
 

@@ -11,4 +11,12 @@ interface GameInterface {
      * it will increment 'counter' and if the value passed is '-',
      * it will decrement 'counter'<br />     */
     fun buttonPressed(oper: Char): Unit
+
+    fun addGameChangeListener(listener: GameChangeListener)
+
+    fun removeGameChangeListener(listener: GameChangeListener)
+
+    fun interface GameChangeListener {
+        fun onGameChange(game: GameInterface)
+    }
 }
