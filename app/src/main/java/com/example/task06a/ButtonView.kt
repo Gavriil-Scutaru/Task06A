@@ -3,7 +3,11 @@ package com.example.task06a
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.view.View
+import androidx.core.view.GestureDetectorCompat
+import kotlin.math.sqrt
 
 class ButtonView: View {
     constructor(context: Context?) : super(context)
@@ -49,6 +53,39 @@ class ButtonView: View {
 
     /** The game that is displayed in this view. */
     private val game: GameInterface = ButtonGame()
+
+    private val gestureDetector =
+        GestureDetectorCompat(context, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onDown(e: MotionEvent): Boolean {
+                return true
+            }
+
+            override fun onSingleTapUp(e: MotionEvent): Boolean {
+                val radius = minOf(width / 3f, height / 8f)
+
+                val centerX = width / 2f
+                val centerYPlus = height / 3f
+                val centerYMinus = height / 1.5f
+
+                val distPlus = sqrt((e.y - centerYPlus).square() + (e.x - centerX).square())
+                val distMinus = sqrt((e.y - centerYMinus).square() + (e.x - centerX).square())
+
+                when {
+                    distPlus < radius -> game.buttonPressed('p')
+                    distMinus < radius -> game.buttonPressed('m')
+                    else -> return false
+                }
+                invalidate()
+                return true
+            }
+
+            private fun Float.square() = this * this
+
+        })
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event)
+    }
 
     override fun onDraw(canvas: Canvas?) {
         //draw the View
