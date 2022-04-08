@@ -47,6 +47,9 @@ class ButtonView: View {
         setTypeface(Typeface.SANS_SERIF)
     }
 
+    /** The game that is displayed in this view. */
+    private val game: GameInterface = ButtonGame()
+
     override fun onDraw(canvas: Canvas?) {
         //draw the View
         // Measure the size of the canvas, we could take into account padding here
@@ -66,8 +69,8 @@ class ButtonView: View {
         // Background
         canvas?.drawRect(0f, 0f, canvasWidth, canvasHeight, backPaint)
 
-        // TODO Retrieve the value of score from the game class instead of 0
-        val score = 0.toString()
+        // Retrieve the value of score from the game class instead of 0
+        val score = game.counter.toString()
 
         canvas?.drawText(score, viewWidthHalf, canvasHeight / 8f + textOffset, wordsPaint)
 
